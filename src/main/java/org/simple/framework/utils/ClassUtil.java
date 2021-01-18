@@ -1,4 +1,4 @@
-package org.simple.framework.core.utils;
+package org.simple.framework.utils;
 
 import com.google.common.collect.Sets;
 import lombok.SneakyThrows;
@@ -7,6 +7,7 @@ import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -97,4 +98,32 @@ public class ClassUtil {
         return Thread.currentThread().getContextClassLoader();
     }
 
+    /**
+     * 实例化 clazz
+     *
+     * @param clazz 目标类
+     * @param <T>   泛型类
+     * @return 实例化对象
+     */
+    public static <T> T newInstance(Class<?> clazz) {
+        return newInstance(clazz, true);
+    }
+
+    /**
+     * 实例化 clazz
+     *
+     * @param clazz 目标类
+     * @param <T>   泛型类
+     * @param accessible
+     * @return 实例化对象
+     */
+    public static <T> T newInstance(Class<?> clazz, boolean accessible) {
+        try {
+            Constructor<?> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(accessible);
+            return (T) constructor.newInstance();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

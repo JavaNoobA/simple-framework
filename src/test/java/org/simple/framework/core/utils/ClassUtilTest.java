@@ -2,6 +2,7 @@ package org.simple.framework.core.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.simple.framework.utils.ClassUtil;
 
 import java.util.Set;
 
