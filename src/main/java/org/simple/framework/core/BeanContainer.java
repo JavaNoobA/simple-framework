@@ -2,10 +2,10 @@ package org.simple.framework.core;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.simple.framework.core.annotation.Component;
-import org.simple.framework.core.annotation.Controller;
-import org.simple.framework.core.annotation.Repository;
-import org.simple.framework.core.annotation.Service;
+import org.simple.framework.annotation.Component;
+import org.simple.framework.annotation.Controller;
+import org.simple.framework.annotation.Repository;
+import org.simple.framework.annotation.Service;
 import org.simple.framework.utils.ClassUtil;
 
 import java.lang.annotation.Annotation;
@@ -157,7 +157,7 @@ public class BeanContainer {
         Set<Class<?>> set = new HashSet<>();
 
         for (Class<?> clazz : getClasses()) {
-            if (clazz.isAssignableFrom(interfaceOrClass) && !interfaceOrClass.equals(clazz)) {
+            if (interfaceOrClass.isAssignableFrom(clazz) && !interfaceOrClass.equals(clazz)) {
                 set.add(clazz);
             }
         }

@@ -1,4 +1,4 @@
-package org.simple.framework.annotation;
+package org.simple.framework.inject.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,9 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author pengfei.zhao
- * @date 2021/1/17 9:51
+ * @date 2021/1/19 20:29
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Repository {
+public @interface Autowired {
+    String value() default "";
 }

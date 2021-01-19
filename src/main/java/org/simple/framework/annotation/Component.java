@@ -1,4 +1,4 @@
-package org.simple.framework.core.annotation;
+package org.simple.framework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
