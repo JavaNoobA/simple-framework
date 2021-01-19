@@ -9,13 +9,12 @@ import org.simple.framework.core.annotation.Service;
 import org.simple.framework.utils.ClassUtil;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Bean 容器
+ *
  * @author pengfei.zhao
  * @date 2021/1/18 19:52
  */
@@ -61,6 +60,14 @@ public class BeanContainer {
         return loaded;
     }
 
+    /**
+     * 存储 Bean 大小
+     * @return size
+     */
+    public int size() {
+        return beanMap.size();
+    }
+
     public void loadBeans(String packageName) {
         if (isLoaded()) {
             log.warn("The container has been loaded");
@@ -79,6 +86,82 @@ public class BeanContainer {
                 }
             }
         }
+    }
+
+    /**
+     * 添加 Bean 到容器
+     *
+     * @param clazz bean's clazz
+     * @param obj   bean instance
+     * @return
+     */
+    public Object addBean(Class<?> clazz, Object obj) {
+        return beanMap.put(clazz, obj);
+    }
+
+    /**
+     * 移除 bean
+     *
+     * @param clazz 指定类
+     */
+    public void removeBean(Class<?> clazz) {
+        beanMap.remove(clazz);
+    }
+
+    public Object getBean(Class<?> clazz) {
+        return beanMap.get(clazz);
+    }
+
+    /**
+     * 获取容器管理的所有Class对象集合
+     *
+     * @return Class集合
+     */
+    public Set<Class<?>> getClasses() {
+        return beanMap.keySet();
+    }
+
+    /**
+     * 获取所有Bean集合
+     *
+     * @return Bean集合
+     */
+    public Set<Object> getBeans() {
+        return new HashSet<>(beanMap.values());
+    }
+
+    /**
+     * 根据注解筛选出Bean的Class集合
+     *
+     * @param annotation 注解
+     * @return Class集合
+     */
+    public Set<Class<?>> getClassesByAnnotation(Class<? extends Annotation> annotation) {
+        Set<Class<?>> set = new HashSet<>();
+
+        for (Class<?> clazz : getClasses()) {
+            if (clazz.isAnnotationPresent(annotation)) {
+                set.add(clazz);
+            }
+        }
+        return set.size() > 0 ? set : null;
+    }
+
+    /**
+     * 通过接口或者父类获取实现类或者子类的Class集合，不包括其本身
+     *
+     * @param interfaceOrClass 接口Class或者父类Class
+     * @return Class集合
+     */
+    public Set<Class<?>> getClassesBySuper(Class<?> interfaceOrClass) {
+        Set<Class<?>> set = new HashSet<>();
+
+        for (Class<?> clazz : getClasses()) {
+            if (clazz.isAssignableFrom(interfaceOrClass) && !interfaceOrClass.equals(clazz)) {
+                set.add(clazz);
+            }
+        }
+        return set.size() > 0 ? set : null;
 
     }
 
